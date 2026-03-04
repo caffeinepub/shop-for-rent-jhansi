@@ -5,22 +5,48 @@ import {
   Text,
 } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
+import { MathUtils } from "three";
 import type * as THREE from "three";
 
-function ShopBuilding() {
+function ShopBuilding({
+  frontOpen,
+  leftOpen,
+}: {
+  frontOpen: boolean;
+  leftOpen: boolean;
+}) {
   const groupRef = useRef<THREE.Group>(null);
+  const frontShutterRef = useRef<THREE.Group>(null);
+  const leftShutterRef = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
-    if (groupRef.current) {
-      // Gentle idle sway
+  useFrame((state, delta) => {
+    const speed = 4;
+    if (frontShutterRef.current) {
+      const targetY = frontOpen ? H - 0.3 : 0;
+      frontShutterRef.current.position.y = MathUtils.lerp(
+        frontShutterRef.current.position.y,
+        targetY,
+        delta * speed,
+      );
+    }
+    if (leftShutterRef.current) {
+      const targetY = leftOpen ? H - 0.3 : 0;
+      leftShutterRef.current.position.y = MathUtils.lerp(
+        leftShutterRef.current.position.y,
+        targetY,
+        delta * speed,
+      );
+    }
+    // idle sway only when both shutters are closed
+    if (groupRef.current && !frontOpen && !leftOpen) {
       groupRef.current.rotation.y =
         Math.sin(state.clock.elapsedTime * 0.3) * 0.05;
     }
   });
 
-  // Shop dimensions: 19ft x 11ft, scaled to 3D units (1 unit = ~1ft)
-  const W = 3.8; // width (19ft)
+  // Shop dimensions: 11ft x 14ft, scaled to 3D units
+  const W = 2.8; // width (14ft)
   const D = 2.2; // depth (11ft)
   const H = 2.8; // height
 
@@ -44,10 +70,10 @@ function ShopBuilding() {
       </mesh>
 
       {/* Floor tiles pattern */}
-      {[-1.2, -0.4, 0.4, 1.2].map((x) =>
+      {[-0.9, -0.3, 0.3, 0.9].map((x) =>
         [-0.7, 0, 0.7].map((z) => (
           <mesh key={`tile-${x}-${z}`} position={[x, 0.042, z]} receiveShadow>
-            <boxGeometry args={[0.75, 0.005, 0.65]} />
+            <boxGeometry args={[0.65, 0.005, 0.65]} />
             <meshStandardMaterial
               color="#c8bca0"
               roughness={0.5}
@@ -63,7 +89,7 @@ function ShopBuilding() {
         <meshStandardMaterial color={wallColor} roughness={0.7} />
       </mesh>
 
-      {/* === LEFT WALL === */}
+      {/* === LEFT WALL (solid base, shutter will overlay) === */}
       <mesh position={[-W / 2, H / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.1, H, D]} />
         <meshStandardMaterial color={wallColor} roughness={0.7} />
@@ -81,76 +107,76 @@ function ShopBuilding() {
         <meshStandardMaterial color={ceilingColor} roughness={0.8} />
       </mesh>
 
-      {/* === FRONT FACADE: Double Shutter (left half) === */}
-      {/* Left shutter panel */}
-      <mesh position={[-W / 4 - 0.05, H / 2 - 0.15, D / 2]} castShadow>
-        <boxGeometry args={[W / 2 - 0.15, H - 0.3, 0.08]} />
-        <meshStandardMaterial
-          color={shutterColor}
-          roughness={0.3}
-          metalness={0.6}
-        />
-      </mesh>
-      {/* Shutter horizontal lines left */}
-      {[0.4, 0.8, 1.2, 1.6, 2.0, 2.4].map((y) => (
-        <mesh
-          key={`shutter-l-${y}`}
-          position={[-W / 4 - 0.05, y, D / 2 + 0.045]}
-        >
-          <boxGeometry args={[W / 2 - 0.18, 0.04, 0.02]} />
+      {/* === FRONT SHUTTER GROUP (animated) === */}
+      <group ref={frontShutterRef}>
+        {/* Front shutter panel mesh */}
+        <mesh position={[0, H / 2 - 0.15, D / 2]} castShadow>
+          <boxGeometry args={[W - 0.25, H - 0.3, 0.08]} />
           <meshStandardMaterial
-            color="#1a1a2a"
-            metalness={0.8}
-            roughness={0.2}
+            color={shutterColor}
+            roughness={0.3}
+            metalness={0.6}
           />
         </mesh>
-      ))}
-
-      {/* Right shutter panel */}
-      <mesh position={[W / 4 + 0.05, H / 2 - 0.15, D / 2]} castShadow>
-        <boxGeometry args={[W / 2 - 0.15, H - 0.3, 0.08]} />
-        <meshStandardMaterial
-          color={shutterColor}
-          roughness={0.3}
-          metalness={0.6}
-        />
-      </mesh>
-      {/* Shutter horizontal lines right */}
-      {[0.4, 0.8, 1.2, 1.6, 2.0, 2.4].map((y) => (
-        <mesh
-          key={`shutter-r-${y}`}
-          position={[W / 4 + 0.05, y, D / 2 + 0.045]}
-        >
-          <boxGeometry args={[W / 2 - 0.18, 0.04, 0.02]} />
+        {/* Shutter horizontal lines — front */}
+        {[0.4, 0.8, 1.2, 1.6, 2.0, 2.4].map((y) => (
+          <mesh key={`shutter-front-${y}`} position={[0, y, D / 2 + 0.045]}>
+            <boxGeometry args={[W - 0.28, 0.04, 0.02]} />
+            <meshStandardMaterial
+              color="#1a1a2a"
+              metalness={0.8}
+              roughness={0.2}
+            />
+          </mesh>
+        ))}
+        {/* Front shutter handle */}
+        <mesh position={[0, H / 2 - 0.15, D / 2 + 0.08]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.3, 8]} />
           <meshStandardMaterial
-            color="#1a1a2a"
-            metalness={0.8}
-            roughness={0.2}
+            color="#c0a060"
+            metalness={0.9}
+            roughness={0.1}
           />
         </mesh>
-      ))}
+      </group>
 
-      {/* Shutter center divider */}
-      <mesh position={[0, H / 2 - 0.15, D / 2 + 0.04]}>
-        <boxGeometry args={[0.08, H - 0.3, 0.04]} />
-        <meshStandardMaterial
-          color={frameColor}
-          metalness={0.7}
-          roughness={0.3}
-        />
-      </mesh>
+      {/* === LEFT WALL SHUTTER GROUP (animated) === */}
+      <group ref={leftShutterRef}>
+        {/* Left shutter panel mesh */}
+        <mesh position={[-W / 2 + 0.04, H / 2 - 0.15, 0]} castShadow>
+          <boxGeometry args={[0.08, H - 0.3, D - 0.2]} />
+          <meshStandardMaterial
+            color={shutterColor}
+            roughness={0.3}
+            metalness={0.6}
+          />
+        </mesh>
+        {/* Left wall shutter horizontal lines (parallel to z-axis) */}
+        {[0.4, 0.8, 1.2, 1.6, 2.0, 2.4].map((y) => (
+          <mesh key={`shutter-left-${y}`} position={[-W / 2 + 0.085, y, 0]}>
+            <boxGeometry args={[0.02, 0.04, D - 0.22]} />
+            <meshStandardMaterial
+              color="#1a1a2a"
+              metalness={0.8}
+              roughness={0.2}
+            />
+          </mesh>
+        ))}
+        {/* Left wall shutter handle */}
+        <mesh
+          position={[-W / 2 + 0.1, H / 2 - 0.15, 0]}
+          rotation={[0, 0, Math.PI / 2]}
+        >
+          <cylinderGeometry args={[0.02, 0.02, 0.25, 8]} />
+          <meshStandardMaterial
+            color="#c0a060"
+            metalness={0.9}
+            roughness={0.1}
+          />
+        </mesh>
+      </group>
 
-      {/* Shutter handles */}
-      <mesh position={[-0.12, H / 2 - 0.15, D / 2 + 0.08]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.3, 8]} />
-        <meshStandardMaterial color="#c0a060" metalness={0.9} roughness={0.1} />
-      </mesh>
-      <mesh position={[0.12, H / 2 - 0.15, D / 2 + 0.08]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.3, 8]} />
-        <meshStandardMaterial color="#c0a060" metalness={0.9} roughness={0.1} />
-      </mesh>
-
-      {/* === MODULAR GLASS TRANSOM (above shutters) === */}
+      {/* === MODULAR GLASS TRANSOM (above front shutter) === */}
       {/* Glass panel - full width above shutters */}
       <mesh position={[0, H - 0.2, D / 2 + 0.01]}>
         <boxGeometry args={[W - 0.1, 0.3, 0.05]} />
@@ -174,7 +200,7 @@ function ShopBuilding() {
         <meshStandardMaterial color={frameColor} metalness={0.6} />
       </mesh>
       {/* Vertical glass frame dividers */}
-      {[-1.2, -0.6, 0, 0.6, 1.2].map((x) => (
+      {[-0.9, -0.45, 0, 0.45, 0.9].map((x) => (
         <mesh key={`gframe-${x}`} position={[x, H - 0.2, D / 2]}>
           <boxGeometry args={[0.05, 0.32, 0.1]} />
           <meshStandardMaterial color={frameColor} metalness={0.6} />
@@ -213,14 +239,14 @@ function ShopBuilding() {
         <meshStandardMaterial color={signColor} roughness={0.5} />
       </mesh>
       <Text
-        position={[0, H + 0.3, D / 2]}
-        fontSize={0.18}
+        position={[0, H + 0.32, D / 2]}
+        fontSize={0.16}
         color="#f0c040"
         anchorX="center"
         anchorY="middle"
-        maxWidth={3.4}
+        maxWidth={2.6}
       >
-        SHOP FOR RENT
+        किराये के लिए दुकान
       </Text>
       <Text
         position={[0, H + 0.12, D / 2]}
@@ -228,9 +254,9 @@ function ShopBuilding() {
         color="#aaaacc"
         anchorX="center"
         anchorY="middle"
-        maxWidth={3.4}
+        maxWidth={2.6}
       >
-        Sipri Bazar, Jhansi
+        सिपरी बाजार, झाँसी
       </Text>
 
       {/* === INTERIOR FURNITURE === */}
@@ -247,7 +273,7 @@ function ShopBuilding() {
         </mesh>
       ))}
       {/* Shelf supports */}
-      {[-1.6, -0.8, 0, 0.8, 1.6].map((x) => (
+      {[-1.1, -0.55, 0, 0.55, 1.1].map((x) => (
         <mesh
           key={`shelf-support-${x}`}
           position={[x, 1.1, -D / 2 + 0.12]}
@@ -260,7 +286,7 @@ function ShopBuilding() {
 
       {/* Counter / reception desk */}
       <mesh position={[0, 0.75, 0.4]} castShadow>
-        <boxGeometry args={[W - 0.6, 0.08, 0.6]} />
+        <boxGeometry args={[W - 0.5, 0.08, 0.6]} />
         <meshStandardMaterial
           color={counterColor}
           roughness={0.4}
@@ -268,12 +294,12 @@ function ShopBuilding() {
         />
       </mesh>
       <mesh position={[0, 0.37, 0.4]} castShadow>
-        <boxGeometry args={[W - 0.6, 0.7, 0.55]} />
+        <boxGeometry args={[W - 0.5, 0.7, 0.55]} />
         <meshStandardMaterial color={furnitureColor} roughness={0.5} />
       </mesh>
 
       {/* Items on shelves */}
-      {[-1.4, -0.9, -0.4, 0.1, 0.6, 1.1, 1.6].map((x) =>
+      {[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0].map((x) =>
         [0.5, 1.0, 1.5, 2.0].map((y) => (
           <mesh
             key={`item-${x}-${y}`}
@@ -300,7 +326,7 @@ function ShopBuilding() {
       )}
 
       {/* Ceiling light fixtures */}
-      {[-1.2, 0, 1.2].map((x) => (
+      {[-0.9, 0, 0.9].map((x) => (
         <group key={`light-${x}`} position={[x, H - 0.1, 0]}>
           <mesh>
             <boxGeometry args={[0.6, 0.06, 0.15]} />
@@ -336,11 +362,61 @@ function SceneLoader() {
 }
 
 export default function ShopModel3D() {
+  const [frontOpen, setFrontOpen] = useState(false);
+  const [leftOpen, setLeftOpen] = useState(false);
+  const orbitRef = useRef<any>(null);
+
   return (
     <div
-      className="relative w-full overflow-hidden rounded-2xl border border-border shadow-hero bg-gradient-to-b from-sky-100 to-slate-100"
-      style={{ height: 480 }}
+      className="relative w-full overflow-hidden rounded-2xl border border-border shadow-hero"
+      style={{
+        height: 480,
+        background:
+          "linear-gradient(135deg, oklch(0.88 0.06 55) 0%, oklch(0.94 0.04 75) 60%, oklch(0.97 0.02 85) 100%)",
+      }}
     >
+      {/* Shutter Controls */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={() => {
+            setFrontOpen((v) => !v);
+            if (orbitRef.current) orbitRef.current.autoRotate = false;
+          }}
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold shadow-md transition-all"
+          style={{
+            background: frontOpen ? "oklch(0.55 0.18 45)" : "rgba(0,0,0,0.55)",
+            color: "white",
+            backdropFilter: "blur(8px)",
+            border: frontOpen
+              ? "1px solid oklch(0.72 0.16 65)"
+              : "1px solid rgba(255,255,255,0.15)",
+          }}
+          data-ocid="front_shutter.toggle"
+        >
+          {frontOpen ? "🔓 सामने बंद करें" : "🔑 सामने खोलें"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setLeftOpen((v) => !v);
+            if (orbitRef.current) orbitRef.current.autoRotate = false;
+          }}
+          className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold shadow-md transition-all"
+          style={{
+            background: leftOpen ? "oklch(0.55 0.18 45)" : "rgba(0,0,0,0.55)",
+            color: "white",
+            backdropFilter: "blur(8px)",
+            border: leftOpen
+              ? "1px solid oklch(0.72 0.16 65)"
+              : "1px solid rgba(255,255,255,0.15)",
+          }}
+          data-ocid="left_shutter.toggle"
+        >
+          {leftOpen ? "🔓 बाईं दीवार बंद करें" : "🔑 बाईं दीवार खोलें"}
+        </button>
+      </div>
+
       <Canvas
         shadows
         camera={{ position: [5, 4, 7], fov: 42 }}
@@ -364,7 +440,7 @@ export default function ShopModel3D() {
           <pointLight position={[0, 2.6, 0]} intensity={0.8} color="#fffaee" />
 
           {/* Shop */}
-          <ShopBuilding />
+          <ShopBuilding frontOpen={frontOpen} leftOpen={leftOpen} />
 
           {/* Ground shadow */}
           <ContactShadows
@@ -380,6 +456,7 @@ export default function ShopModel3D() {
 
           {/* Controls */}
           <OrbitControls
+            ref={orbitRef}
             enablePan={false}
             minDistance={4}
             maxDistance={14}
@@ -394,7 +471,7 @@ export default function ShopModel3D() {
       {/* Overlay label */}
       <div className="pointer-events-none absolute bottom-3 left-0 right-0 flex justify-center">
         <span className="rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-          Drag to rotate &nbsp;·&nbsp; Scroll to zoom
+          घुमाएं · ज़ूम करें
         </span>
       </div>
     </div>

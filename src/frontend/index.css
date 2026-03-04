@@ -22,66 +22,98 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
-    /* Rich warm navy + gold real estate palette */
-    --background: 0.97 0.008 85;
-    --foreground: 0.18 0.025 265;
+    /* ── Luxurious Metallic Palette: Gold · Silver · White Gold ── */
+    --background: 0.10 0.05 55;
+    --foreground: 0.96 0.008 85;
 
-    --card: 1 0 0;
-    --card-foreground: 0.18 0.025 265;
+    --card: 0.14 0.04 60;
+    --card-foreground: 0.96 0.008 85;
 
-    --popover: 1 0 0;
-    --popover-foreground: 0.18 0.025 265;
+    --popover: 0.13 0.042 58;
+    --popover-foreground: 0.96 0.008 85;
 
-    /* Deep navy primary */
-    --primary: 0.22 0.06 265;
-    --primary-foreground: 0.98 0 85;
+    /* Molten gold primary */
+    --primary: 0.74 0.18 65;
+    --primary-foreground: 0.10 0.04 55;
 
-    --secondary: 0.94 0.012 85;
-    --secondary-foreground: 0.22 0.06 265;
+    /* Silver-tinted secondary */
+    --secondary: 0.20 0.03 200;
+    --secondary-foreground: 0.90 0.010 85;
 
-    --muted: 0.93 0.01 85;
-    --muted-foreground: 0.52 0.02 265;
+    --muted: 0.18 0.03 65;
+    --muted-foreground: 0.60 0.020 70;
 
-    /* Gold accent */
-    --accent: 0.72 0.16 65;
-    --accent-foreground: 0.18 0.025 265;
+    /* Bright gold accent */
+    --accent: 0.78 0.20 72;
+    --accent-foreground: 0.10 0.04 55;
 
     --destructive: 0.577 0.245 27.325;
     --destructive-foreground: 0.985 0 0;
 
-    --border: 0.88 0.015 85;
-    --input: 0.88 0.015 85;
-    --ring: 0.22 0.06 265;
+    --border: 0.30 0.08 65;
+    --input: 0.22 0.05 60;
+    --ring: 0.74 0.18 65;
 
     /* Success */
     --success: 0.62 0.18 145;
     --success-foreground: 0.98 0 0;
 
-    --chart-1: 0.646 0.222 41.116;
-    --chart-2: 0.6 0.118 184.704;
-    --chart-3: 0.398 0.07 227.392;
-    --chart-4: 0.828 0.189 84.429;
-    --chart-5: 0.769 0.188 70.08;
+    --chart-1: 0.74 0.18 65;
+    --chart-2: 0.60 0.118 184;
+    --chart-3: 0.50 0.14 310;
+    --chart-4: 0.83 0.19 84;
+    --chart-5: 0.77 0.19 70;
 
-    --sidebar: 0.985 0 0;
-    --sidebar-foreground: 0.145 0 0;
-    --sidebar-primary: 0.205 0 0;
-    --sidebar-primary-foreground: 0.985 0 0;
-    --sidebar-accent: 0.97 0 0;
-    --sidebar-accent-foreground: 0.205 0 0;
-    --sidebar-border: 0.922 0 0;
-    --sidebar-ring: 0.708 0 0;
+    --sidebar: 0.13 0.042 58;
+    --sidebar-foreground: 0.90 0.010 85;
+    --sidebar-primary: 0.74 0.18 65;
+    --sidebar-primary-foreground: 0.10 0.04 55;
+    --sidebar-accent: 0.20 0.03 200;
+    --sidebar-accent-foreground: 0.90 0.010 85;
+    --sidebar-border: 0.30 0.08 65;
+    --sidebar-ring: 0.74 0.18 65;
   }
 
   * {
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: "Cabinet Grotesk", sans-serif;
+    /* Deep luxurious dark velvet with metallic veins */
+    background-color: oklch(0.10 0.05 55);
+    background-image:
+      /* Fine grain noise texture — premium feel */
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E"),
+      /* Gold top-right radiant sweep */
+      radial-gradient(ellipse 65% 55% at 100% 0%, oklch(0.18 0.08 58 / 0.65) 0%, transparent 55%),
+      /* Silver top-left sweep */
+      radial-gradient(ellipse 80% 60% at 0% 0%, oklch(0.18 0.03 200 / 0.60) 0%, transparent 55%),
+      /* White gold center shimmer — stronger */
+      radial-gradient(ellipse 70% 60% at 50% 40%, oklch(0.17 0.05 75 / 0.55) 0%, transparent 65%),
+      /* Deep gold bottom-left warmth */
+      radial-gradient(ellipse 75% 55% at 0% 100%, oklch(0.16 0.07 55 / 0.60) 0%, transparent 60%),
+      /* Deep gold bottom-right warmth */
+      radial-gradient(ellipse 70% 55% at 100% 100%, oklch(0.15 0.06 55 / 0.60) 0%, transparent 60%),
+      /* Conic golden mesh at center — very subtle */
+      conic-gradient(from 0deg at 50% 50%,
+        oklch(0.14 0.06 65 / 0.08) 0deg,
+        oklch(0.12 0.02 200 / 0.05) 60deg,
+        oklch(0.14 0.04 75 / 0.07) 120deg,
+        oklch(0.12 0.03 200 / 0.05) 180deg,
+        oklch(0.14 0.06 65 / 0.08) 240deg,
+        oklch(0.12 0.02 200 / 0.05) 300deg,
+        oklch(0.14 0.06 65 / 0.08) 360deg),
+      /* Base dark gold gradient */
+      linear-gradient(160deg, oklch(0.12 0.04 200) 0%, oklch(0.10 0.05 55) 40%, oklch(0.08 0.04 55) 100%);
+    background-attachment: fixed;
   }
 
   h1,
@@ -89,4 +121,319 @@
   h3 {
     font-family: "Fraunces", serif;
   }
+}
+
+/* ── Keyframe Animations ── */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-20px) scale(1.04); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0px) scale(1) rotate(0deg); }
+  33% { transform: translateY(-14px) scale(1.02) rotate(1deg); }
+  66% { transform: translateY(-8px) scale(0.98) rotate(-1deg); }
+}
+
+@keyframes float-fast {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer-gold {
+  0% { opacity: 0.4; transform: scale(0.95); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+  100% { opacity: 0.4; transform: scale(0.95); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 30px 8px oklch(0.74 0.18 65 / 0.15); }
+  50% { box-shadow: 0 0 60px 20px oklch(0.74 0.18 65 / 0.30); }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes diagonal-drift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(8px, -6px) rotate(1.5deg); }
+  50% { transform: translate(14px, -12px) rotate(0deg); }
+  75% { transform: translate(6px, -5px) rotate(-1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* ── Metallic shine sweep ── */
+@keyframes metallic-shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ── Silver orb drift ── */
+@keyframes orb-silver-drift {
+  0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
+  33% { transform: translateY(-18px) translateX(10px) scale(1.06); }
+  66% { transform: translateY(-8px) translateX(-6px) scale(0.97); }
+}
+
+/* ── White gold pulse ── */
+@keyframes orb-whitegold {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-14px) scale(1.08); opacity: 1; }
+}
+
+/* ── Global Orb Layers ── */
+.bg-orb-gold {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.bg-orb-silver {
+  animation: orb-silver-drift 10s ease-in-out infinite;
+}
+
+.bg-orb-whitegold {
+  animation: orb-whitegold 7s ease-in-out infinite;
+}
+
+/* kept for backward compat */
+.bg-orb-purple {
+  animation: float-medium 11s ease-in-out infinite;
+}
+
+.bg-orb-teal {
+  animation: float-fast 6s ease-in-out infinite;
+}
+
+/* ── Section Dividers: alternating gold → silver → white gold ── */
+.section-gold-stripe::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.74 0.18 65 / 0.6) 20%,
+    oklch(0.85 0.22 75) 50%,
+    oklch(0.74 0.18 65 / 0.6) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px oklch(0.85 0.22 75 / 0.35);
+  margin-bottom: 0;
+}
+
+.section-silver-stripe::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.80 0.01 200 / 0.6) 20%,
+    oklch(0.90 0.00 0) 50%,
+    oklch(0.80 0.01 200 / 0.6) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px oklch(0.90 0.00 0 / 0.25);
+  margin-bottom: 0;
+}
+
+.section-whitegold-stripe::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.92 0.06 90 / 0.6) 20%,
+    oklch(0.95 0.08 85) 50%,
+    oklch(0.92 0.06 90 / 0.6) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px oklch(0.95 0.08 85 / 0.25);
+  margin-bottom: 0;
+}
+
+/* ── Gold shimmer text effect ── */
+.text-gold-shimmer {
+  background: linear-gradient(
+    135deg,
+    oklch(0.82 0.20 75) 0%,
+    oklch(0.74 0.18 65) 40%,
+    oklch(0.92 0.15 85) 60%,
+    oklch(0.74 0.18 65) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Card Glass Effect ── */
+.glass-card {
+  background: oklch(0.14 0.04 60 / 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(0.74 0.18 65 / 0.22);
+}
+
+/* ── Dot Matrix Pattern — gold tinted ── */
+.dot-matrix-bg {
+  background-image: radial-gradient(
+    circle,
+    oklch(0.74 0.18 65 / 0.14) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* ── Diagonal Lines Pattern — tighter, more visible ── */
+.diagonal-lines-bg {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(0.74 0.18 65 / 0.07) 0px,
+    oklch(0.74 0.18 65 / 0.07) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+}
+
+/* ── Shiny Metallic Border Utility ── */
+/* Gold shiny glow */
+.shiny-border-gold {
+  box-shadow:
+    0 0 0 1px oklch(0.85 0.20 75 / 0.60),
+    0 0 20px oklch(0.85 0.20 75 / 0.22),
+    0 0 40px oklch(0.88 0.12 80 / 0.12),
+    inset 0 1px 0 oklch(0.92 0.18 80 / 0.28);
+}
+
+/* Silver shiny glow */
+.shiny-border-silver {
+  box-shadow:
+    0 0 0 1px oklch(0.80 0.01 200 / 0.55),
+    0 0 18px oklch(0.85 0.00 0 / 0.20),
+    0 0 36px oklch(0.75 0.02 210 / 0.10),
+    inset 0 1px 0 oklch(0.92 0.00 0 / 0.22);
+}
+
+/* White gold shiny glow */
+.shiny-border-whitegold {
+  box-shadow:
+    0 0 0 1px oklch(0.92 0.08 85 / 0.58),
+    0 0 18px oklch(0.95 0.08 85 / 0.20),
+    0 0 36px oklch(0.88 0.12 80 / 0.12),
+    inset 0 1px 0 oklch(0.96 0.06 90 / 0.25);
+}
+
+/* Combined multi-metal shiny border */
+.shiny-border {
+  box-shadow:
+    0 0 0 1px oklch(0.85 0.20 75 / 0.60),
+    0 0 20px oklch(0.85 0.20 75 / 0.20),
+    0 0 40px oklch(0.88 0.12 80 / 0.10),
+    inset 0 1px 0 oklch(0.92 0.18 80 / 0.25);
+}
+
+/* ── Metallic gradient border wrap ── */
+/* Use on a wrapper element with .metallic-border-wrap and position:relative */
+.metallic-border-wrap {
+  position: relative;
+  border-radius: inherit;
+}
+
+.metallic-border-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.85 0.22 75) 0%,
+    oklch(0.92 0.18 80) 25%,
+    oklch(0.80 0.01 200) 50%,
+    oklch(0.95 0.08 85) 75%,
+    oklch(0.78 0.20 65) 100%
+  );
+  z-index: -1;
+  animation: metallic-shine 4s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* ── Metallic card background ── */
+.metallic-card {
+  background: linear-gradient(
+    135deg,
+    oklch(0.16 0.05 60) 0%,
+    oklch(0.14 0.04 58) 50%,
+    oklch(0.15 0.03 200 / 0.6) 100%
+  );
+}
+
+/* ── NEW: Metallic sweep animation — left-to-right light sweep ── */
+@keyframes metallic-sweep {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ── NEW: Background depth pulse ── */
+@keyframes bg-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1.0; }
+}
+
+/* ── NEW: Hero shimmer sweep layer ── */
+.hero-shimmer-layer {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    oklch(0.95 0.08 85 / 0.00) 30%,
+    oklch(0.95 0.08 85 / 0.06) 45%,
+    oklch(0.92 0.12 78 / 0.08) 50%,
+    oklch(0.95 0.08 85 / 0.06) 55%,
+    oklch(0.95 0.08 85 / 0.00) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: metallic-sweep 8s ease-in-out infinite;
+}
+
+/* ── NEW: Animated background mesh ── */
+.animated-bg-mesh {
+  background:
+    conic-gradient(
+      from 0deg at 50% 50%,
+      oklch(0.74 0.18 65 / 0.04) 0deg,
+      transparent 60deg,
+      oklch(0.80 0.01 200 / 0.04) 90deg,
+      transparent 150deg,
+      oklch(0.95 0.08 85 / 0.04) 180deg,
+      transparent 240deg,
+      oklch(0.74 0.18 65 / 0.04) 300deg,
+      transparent 360deg
+    );
+  animation: bg-pulse 6s ease-in-out infinite;
+}
+
+/* ── NEW: Luxury conic overlay — gold → silver → white gold cycling ── */
+.luxury-bg-overlay {
+  background:
+    conic-gradient(
+      from 45deg at 50% 0%,
+      oklch(0.85 0.22 75 / 0.05) 0deg,
+      transparent 45deg,
+      oklch(0.80 0.01 200 / 0.04) 90deg,
+      transparent 135deg,
+      oklch(0.95 0.08 85 / 0.06) 180deg,
+      transparent 225deg,
+      oklch(0.85 0.22 75 / 0.04) 270deg,
+      transparent 315deg,
+      oklch(0.80 0.01 200 / 0.05) 360deg
+    );
 }

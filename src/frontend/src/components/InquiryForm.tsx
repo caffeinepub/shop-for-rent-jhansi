@@ -24,18 +24,18 @@ interface FormErrors {
 
 function validate(form: FormState): FormErrors {
   const errors: FormErrors = {};
-  if (!form.name.trim()) errors.name = "Full name is required";
+  if (!form.name.trim()) errors.name = "पूरा नाम आवश्यक है";
   if (!form.phone.trim()) {
-    errors.phone = "Phone number is required";
+    errors.phone = "फ़ोन नंबर आवश्यक है";
   } else if (!/^\d{7,15}$/.test(form.phone.replace(/[\s\-+()]/g, ""))) {
-    errors.phone = "Please enter a valid phone number (digits only)";
+    errors.phone = "सही फ़ोन नंबर दर्ज करें";
   }
   if (!form.email.trim()) {
-    errors.email = "Email is required";
+    errors.email = "ईमेल आवश्यक है";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    errors.email = "Please enter a valid email address";
+    errors.email = "सही ईमेल पता दर्ज करें";
   }
-  if (!form.message.trim()) errors.message = "Message is required";
+  if (!form.message.trim()) errors.message = "संदेश आवश्यक है";
   return errors;
 }
 
@@ -71,12 +71,10 @@ export default function InquiryForm() {
     try {
       await mutation.mutateAsync(form);
       setSubmitted(true);
-      toast.success(
-        "Inquiry submitted successfully! We'll contact you shortly.",
-      );
+      toast.success("जानकारी सफलतापूर्वक भेजी गई! हम जल्द संपर्क करेंगे।");
       setForm({ name: "", phone: "", email: "", message: "" });
     } catch {
-      toast.error("Failed to submit inquiry. Please try again.");
+      toast.error("जानकारी भेजने में त्रुटि। पुनः प्रयास करें।");
     }
   };
 
@@ -91,18 +89,18 @@ export default function InquiryForm() {
           <CheckCircle className="h-8 w-8 text-success" />
         </div>
         <h3 className="font-display text-2xl font-semibold text-foreground">
-          Thank You!
+          धन्यवाद!
         </h3>
         <p className="max-w-sm text-muted-foreground">
-          Your inquiry has been submitted. We'll get back to you within 24
-          hours.
+          आपकी जानकारी मिल गई है। हम 24 घंटे में वापस संपर्क करेंगे।
         </p>
         <Button
           variant="outline"
           onClick={() => setSubmitted(false)}
           className="mt-2"
+          data-ocid="inquiry.secondary_button"
         >
-          Send Another Inquiry
+          दोबारा जानकारी भेजें
         </Button>
       </motion.div>
     );
@@ -113,15 +111,16 @@ export default function InquiryForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="name" className="font-medium">
-            Full Name <span className="text-destructive">*</span>
+            पूरा नाम <span className="text-destructive">*</span>
           </Label>
           <Input
             id="name"
             name="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="Your full name"
+            placeholder="आपका पूरा नाम"
             autoComplete="name"
+            data-ocid="inquiry.input"
             className={
               errors.name
                 ? "border-destructive focus-visible:ring-destructive"
@@ -129,7 +128,11 @@ export default function InquiryForm() {
             }
           />
           {errors.name && (
-            <p className="text-xs text-destructive" role="alert">
+            <p
+              className="text-xs text-destructive"
+              role="alert"
+              data-ocid="inquiry.error_state"
+            >
               {errors.name}
             </p>
           )}
@@ -137,7 +140,7 @@ export default function InquiryForm() {
 
         <div className="space-y-1.5">
           <Label htmlFor="phone" className="font-medium">
-            Phone Number <span className="text-destructive">*</span>
+            फ़ोन नंबर <span className="text-destructive">*</span>
           </Label>
           <Input
             id="phone"
@@ -145,8 +148,9 @@ export default function InquiryForm() {
             type="tel"
             value={form.phone}
             onChange={handleChange}
-            placeholder="e.g. 9876543210"
+            placeholder="जैसे 9876543210"
             autoComplete="tel"
+            data-ocid="inquiry.input"
             className={
               errors.phone
                 ? "border-destructive focus-visible:ring-destructive"
@@ -163,7 +167,7 @@ export default function InquiryForm() {
 
       <div className="space-y-1.5">
         <Label htmlFor="email" className="font-medium">
-          Email Address <span className="text-destructive">*</span>
+          ईमेल पता <span className="text-destructive">*</span>
         </Label>
         <Input
           id="email"
@@ -173,6 +177,7 @@ export default function InquiryForm() {
           onChange={handleChange}
           placeholder="you@email.com"
           autoComplete="email"
+          data-ocid="inquiry.input"
           className={
             errors.email
               ? "border-destructive focus-visible:ring-destructive"
@@ -188,15 +193,16 @@ export default function InquiryForm() {
 
       <div className="space-y-1.5">
         <Label htmlFor="message" className="font-medium">
-          Message <span className="text-destructive">*</span>
+          संदेश <span className="text-destructive">*</span>
         </Label>
         <Textarea
           id="message"
           name="message"
           value={form.message}
           onChange={handleChange}
-          placeholder="Tell us about your business and when you'd like to visit..."
+          placeholder="अपने व्यवसाय के बारे में बताएं..."
           rows={4}
+          data-ocid="inquiry.textarea"
           className={
             errors.message
               ? "border-destructive focus-visible:ring-destructive"
@@ -215,16 +221,17 @@ export default function InquiryForm() {
         disabled={mutation.isPending}
         className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
         size="lg"
+        data-ocid="inquiry.submit_button"
       >
         {mutation.isPending ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Submitting...
+            भेज रहे हैं...
           </>
         ) : (
           <>
             <Send className="h-4 w-4" />
-            Send Inquiry
+            जानकारी भेजें
           </>
         )}
       </Button>

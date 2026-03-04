@@ -8,12 +8,12 @@ export default function FloorPlan() {
   return (
     <div className="flex flex-col items-center gap-3">
       <h3 className="font-display text-lg font-semibold text-foreground">
-        Floor Plan — 2D Layout
+        नक्शा — 2D लेआउट
       </h3>
       <svg
         viewBox={`0 0 ${width} ${height}`}
         className="w-full max-w-sm rounded-lg border border-border bg-white shadow-card"
-        aria-label="Floor plan showing 19 by 11 foot shop dimensions"
+        aria-label="14 फुट × 11 फुट दुकान का नक्शा"
         role="img"
       >
         {/* Grid lines */}
@@ -113,7 +113,7 @@ export default function FloorPlan() {
           fill="oklch(0.22 0.06 265)"
           fontFamily="Cabinet Grotesk, sans-serif"
         >
-          19 ft
+          14 ft
         </text>
 
         {/* Height dimension label (right) */}
@@ -156,7 +156,7 @@ export default function FloorPlan() {
           fill="oklch(0.22 0.06 265 / 0.7)"
           fontFamily="Cabinet Grotesk, sans-serif"
         >
-          209 sq ft
+          154 वर्ग फुट
         </text>
         <text
           x={margin + roomW / 2}
@@ -166,7 +166,7 @@ export default function FloorPlan() {
           fill="oklch(0.52 0.02 265)"
           fontFamily="Cabinet Grotesk, sans-serif"
         >
-          Commercial Space
+          व्यावसायिक स्थान
         </text>
 
         {/* Legend */}
@@ -185,7 +185,7 @@ export default function FloorPlan() {
           fill="oklch(0.52 0.02 265)"
           fontFamily="Cabinet Grotesk, sans-serif"
         >
-          Window
+          खिड़की
         </text>
 
         <path
@@ -201,7 +201,7 @@ export default function FloorPlan() {
           fill="oklch(0.52 0.02 265)"
           fontFamily="Cabinet Grotesk, sans-serif"
         >
-          Door
+          दरवाजा
         </text>
       </svg>
     </div>
