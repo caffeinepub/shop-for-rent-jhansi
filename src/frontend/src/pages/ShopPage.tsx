@@ -1320,21 +1320,38 @@ export default function ShopPage() {
                     श्री सुधीर सिंह यादव
                   </p>
                 </div>
-                <a
-                  href="tel:+917355646852"
-                  className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 hover:scale-105"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.74 0.18 65) 0%, oklch(0.88 0.18 78) 50%, oklch(0.65 0.20 55) 100%)",
-                    color: "oklch(0.10 0.04 55)",
-                    boxShadow:
-                      "0 0 16px oklch(0.74 0.18 65 / 0.30), inset 0 1px 0 oklch(0.92 0.18 80 / 0.35)",
-                  }}
-                  data-ocid="contact.primary_button"
-                >
-                  <Phone className="h-3.5 w-3.5" />
-                  कॉल करें
-                </a>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href="tel:+917355646852"
+                    className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 hover:scale-105"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, oklch(0.74 0.18 65) 0%, oklch(0.88 0.18 78) 50%, oklch(0.65 0.20 55) 100%)",
+                      color: "oklch(0.10 0.04 55)",
+                      boxShadow:
+                        "0 0 16px oklch(0.74 0.18 65 / 0.30), inset 0 1px 0 oklch(0.92 0.18 80 / 0.35)",
+                    }}
+                    data-ocid="contact.primary_button"
+                  >
+                    <Phone className="h-3.5 w-3.5" />
+                    +91 73556 46852
+                  </a>
+                  <a
+                    href="tel:+917355646853"
+                    className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 hover:scale-105"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, oklch(0.74 0.18 65) 0%, oklch(0.88 0.18 78) 50%, oklch(0.65 0.20 55) 100%)",
+                      color: "oklch(0.10 0.04 55)",
+                      boxShadow:
+                        "0 0 16px oklch(0.74 0.18 65 / 0.30), inset 0 1px 0 oklch(0.92 0.18 80 / 0.35)",
+                    }}
+                    data-ocid="contact.secondary_button"
+                  >
+                    <Phone className="h-3.5 w-3.5" />
+                    +91 73556 46853
+                  </a>
+                </div>
               </motion.div>
             </motion.div>
           </div>
@@ -1439,6 +1456,20 @@ export default function ShopPage() {
                     data-ocid="footer.link"
                   >
                     +91 73556 46852
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone
+                    className="h-4 w-4 shrink-0"
+                    style={{ color: "oklch(0.80 0.14 70 / 0.70)" }}
+                  />
+                  <a
+                    href="tel:+917355646853"
+                    className="text-sm transition-colors duration-200 hover:text-foreground"
+                    style={{ color: "oklch(0.52 0.03 65)" }}
+                    data-ocid="footer.link2"
+                  >
+                    +91 73556 46853
                   </a>
                 </div>
               </div>
